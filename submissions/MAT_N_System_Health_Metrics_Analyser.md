@@ -61,21 +61,33 @@ This project bridges that gap by combining **local telemetry analysis, cloud-bas
 
 ```mermaid
 graph LR
-   User	
-   |-->Login (Google OAuth)
-   |   
-   |---------> Web App --> Link to Supabase table for User reports --> See Text Report and Analytical Visualisation
-   |		|
-   |		|--> New Chat--> Send query over Chat --->  RAG (chromadb) --> LLM --> Response--> Store Updated Chat and it's Summary --> Supabase                       
-   |	        |                 ^
-                                  |
-   |            |--> Supabase --> Fetch Old Chat 
-   |			
-   |----------> Desktop App --> Monitor System
-   |			|
-   |			|--> Data Collected --> ML Model --> Cleaned Summary --> Upload raw and cleaned data along with metadata --> Supabase
-   |
-   |--> Log Out					  
+    User --> Login["Login (Google OAuth)"]
+
+    Login --> WebApp["Web App"]
+    WebApp --> Reports["Supabase: User Reports"]
+    Reports --> Visuals["Text Report & Analytical Visualization"]
+
+    WebApp --> NewChat["New Chat"]
+    NewChat --> ChatQuery["Send Query"]
+    ChatQuery --> RAG["RAG (ChromaDB)"]
+    RAG --> LLM["LLM"]
+    LLM --> Response["Response"]
+    Response --> StoreChat["Store Chat & Summary"]
+    StoreChat --> Supabase[(Supabase)]
+
+    Supabase --> FetchOldChat["Fetch Old Chat"]
+    FetchOldChat --> NewChat
+
+    Login --> DesktopApp["Desktop App"]
+    DesktopApp --> Monitor["Monitor System"]
+    Monitor --> DataCollected["Data Collected"]
+    DataCollected --> MLModel["ML Model"]
+    MLModel --> CleanedSummary["Cleaned Summary"]
+    CleanedSummary --> UploadData["Upload Raw + Cleaned Data + Metadata"]
+    UploadData --> Supabase
+
+    Login --> Logout["Log Out"]
+			  
 						   					  
 ```
 
